@@ -77,7 +77,7 @@ export class MSDFText extends PIXI.mesh.Mesh {
 
         this._textWidth = this._textHeight = 0;
         this._maxWidth = options.maxWidth || 0;
-        this._anchor = new PIXI.ObservablePoint(() => { this.dirty++; }, this, 0, 0);
+        this._anchor = new PIXI.ObservablePoint(() => { _this.updateText();this.dirty++; }, this, 0, 0);
         this._textMetricsBound = new PIXI.Rectangle();
 
         // Debug initialize
@@ -224,6 +224,14 @@ export class MSDFText extends PIXI.mesh.Mesh {
 
         this._textWidth = maxLineWidth;
         this._textHeight = maxLineHeight;
+        
+        if (this._anchor.x !== 0 || this._anchor.y !== 0) {
+            for(var _ii=0;_ii<chars.length;_ii++) {
+                chars[_ii]['drawRect'].x -= (this._textWidth * this._anchor.x);
+                chars[_ii]['drawRect'].y -= (this._textHeight * this._anchor.y);
+            }
+        }
+        
         this._textMetricsBound = new PIXI.Rectangle(0, 0, maxLineWidth, maxLineHeight);
 
         this.vertices = this.toVertices(chars);
@@ -236,6 +244,7 @@ export class MSDFText extends PIXI.mesh.Mesh {
 
     public get text(): string { return this._text; }
     public set text(value) { this._text = this.unescape(value); this.updateText(); }
+    public get anchor(): any { return this._anchor; }
     public get fontData(): any { return this._font; }
     public get glDatas(): any { return this._glDatas; }
     public get textWidth(): number { return this._textWidth; }
