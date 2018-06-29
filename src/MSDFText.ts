@@ -77,7 +77,7 @@ export class MSDFText extends PIXI.mesh.Mesh {
 
         this._textWidth = this._textHeight = 0;
         this._maxWidth = options.maxWidth || 0;
-        this._anchor = new PIXI.ObservablePoint(() => { _this.updateText();this.dirty++; }, this, 0, 0);
+        this._anchor = new PIXI.ObservablePoint(() => { this.updateText();this.dirty++; }, this, 0, 0);
         this._textMetricsBound = new PIXI.Rectangle();
 
         // Debug initialize
